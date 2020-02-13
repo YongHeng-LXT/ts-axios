@@ -34,7 +34,11 @@ router.get("/simple/get",function(req,res){
     res.json({
         msg:"连接成功"
     })
-    // res.send({
-    //     msg:"连接成功"
-    // })
+})
+
+router.get("/base/get",function(req,res){
+    res.json({
+        msg:"连接成功",
+        req:req.query
+    })
 })
