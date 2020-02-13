@@ -44,7 +44,9 @@ router.get("/base/get",function(req,res){
 })
 
 router.post("/base/post",function(req,res){
-    res.json(req.body)
+    setTimeout(function(){
+        res.json(req.body)
+    },2000)
 })
 
 router.post('/base/buffer', function(req, res) {

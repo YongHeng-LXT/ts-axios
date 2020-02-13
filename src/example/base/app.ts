@@ -1,4 +1,4 @@
-import {axios} from "../../index"
+import axios,{AxiosError} from "../../index"
 
 axios({
     method:"get",
@@ -43,7 +43,12 @@ axios({
     data: {
         x:5,
         y:6
-    } 
+    }
 }).then(res=>{
     console.log(res);
+}).catch((e:AxiosError) => { 
+    console.log(e) 
+    console.log(e.message) 
+    console.log(e.config) 
+    console.log(e.code) 
 })

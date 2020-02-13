@@ -1,16 +1,19 @@
 import { AxiosRequestConfig,AxiosPromise,AxiosResponse } from './type/dataInterface'
-import { resolve } from 'dns';
-import { request } from 'http';
 import {parseHeaders} from "./helpers/headers"
+import { createError } from './helpers/error'
 
 //通过配置数据调用原生的XMLHttpRequest对象的方法,进行数据请求
 function xhr(config:AxiosRequestConfig):AxiosPromise{
-    return new Promise((resolve)=>{
-        const {url,data=null,method="get",headers,responseType}=config;
+    return new Promise((resolve,reject)=>{
+        const {url,data=null,method="get",headers,responseType,timeout}=config;
         const request=new XMLHttpRequest();
 
         if(responseType){
             request.responseType=responseType
+        }
+
+        if(timeout){
+            request.timeout=timeout
         }
 
         request.open(method.toUpperCase(),url,true);
@@ -25,8 +28,24 @@ function xhr(config:AxiosRequestConfig):AxiosPromise{
 
         request.send(data);
 
+        function handleResponse(response:AxiosResponse){
+            if(response.status>=200 && response.status<300){
+                resolve(response)
+            }else{
+                reject(createError( 
+                    `Request failed with status code ${response.status}`, 
+                    config, 
+                    null, 
+                    request, 
+                    response 
+                ))
+            }
+        }
         request.onreadystatechange=function handleLoad(){
             if(request.readyState!==4){
+                return
+            }
+            if(request.status===0){
                 return
             }
             const responseHeaders=parseHeaders(request.getAllResponseHeaders())
@@ -39,7 +58,23 @@ function xhr(config:AxiosRequestConfig):AxiosPromise{
                 config,
                 request
             }
-            resolve(response)
+            handleResponse(response)
+        }
+        request.onerror=function handleError(){
+            reject(createError( 
+                'Network Error', 
+                config, 
+                null, 
+                request 
+            ))
+        }
+        request.ontimeout=function handleTimeout(){
+            reject(createError( 
+                `Timeout of ${config.timeout} ms exceeded`, 
+                config, 
+                'ECONNABORTED', 
+                request 
+            ))
         }
     })
 }

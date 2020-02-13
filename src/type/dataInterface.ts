@@ -6,6 +6,7 @@ interface AxiosRequestConfig{
     parmas?:any
     headers?:any
     responseType?:XMLHttpRequestResponseType
+    timeout?:number
 }
 
 //对请求方式进行定义
@@ -30,6 +31,15 @@ interface AxiosResponse{
 //定义axios返回的Promise对象接口
 export interface AxiosPromise extends Promise<AxiosResponse> {
 
+}
+
+//对于错误信息进行接口定义
+export interface AxiosError extends Error { 
+    config: AxiosRequestConfig 
+    code?: string 
+    request?: any 
+    response?: AxiosResponse 
+    isAxiosError: boolean 
 }
 
 export {AxiosRequestConfig,AxiosResponse}
