@@ -1,5 +1,6 @@
 import {isData,isPlainObject} from "./util"
 
+//对字符串进行编码
 function encode(val:string):string{
     return encodeURIComponent(val)
         .replace(/%40/g, '@')
@@ -11,6 +12,7 @@ function encode(val:string):string{
         .replace(/%5D/gi, ']')
 }
 
+//将url和params(查询字符串)数据进行拼接整合
 export function bulidURL(url:string,params?:any){
     if(!params){
         return url
