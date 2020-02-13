@@ -1,6 +1,6 @@
-import { AxiosRequestConfig,AxiosPromise,AxiosResponse } from './type/dataInterface'
-import {parseHeaders} from "./helpers/headers"
-import { createError } from './helpers/error'
+import { AxiosRequestConfig,AxiosPromise,AxiosResponse } from '../type/dataInterface'
+import {parseHeaders} from "../helpers/headers"
+import { createError } from '../helpers/error'
 
 //通过配置数据调用原生的XMLHttpRequest对象的方法,进行数据请求
 function xhr(config:AxiosRequestConfig):AxiosPromise{
@@ -16,7 +16,7 @@ function xhr(config:AxiosRequestConfig):AxiosPromise{
             request.timeout=timeout
         }
 
-        request.open(method.toUpperCase(),url,true);
+        request.open(method.toUpperCase(),url!,true);
 
         Object.keys(headers).forEach((name)=>{
             if(data===null && name.toLowerCase()==="content-type"){

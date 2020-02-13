@@ -37,18 +37,34 @@ axios({
     data:arr
 })
 
-axios({ 
-    method: 'post', 
-    url: '/base/post', 
-    data: {
+// axios({ 
+//     method: 'post', 
+//     url: '/base/post', 
+//     data: {
+//         x:5,
+//         y:6
+//     }
+// }).then(res=>{
+//     console.log(res);
+// }).catch((e:AxiosError) => { 
+//     console.log(e) 
+//     console.log(e.message) 
+//     console.log(e.config) 
+//     console.log(e.code) 
+// })
+
+let ljq = axios.interceptors.request.use(config=>{
+    config.data.z=8
+    return config
+})
+
+axios.interceptors.request.eject(ljq)
+
+
+axios.post('/base/post',{
         x:5,
         y:6
     }
-}).then(res=>{
+).then((res)=>{
     console.log(res);
-}).catch((e:AxiosError) => { 
-    console.log(e) 
-    console.log(e.message) 
-    console.log(e.config) 
-    console.log(e.code) 
 })
