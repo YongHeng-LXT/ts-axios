@@ -24,3 +24,23 @@ export function processHeaders(headers:any,data:any):any{
     }
     return headers
 }
+
+//将返回头的数据从字符串格式设置为对象格式
+export function parseHeaders(headers:string):any{
+    let parsed=Object.create(null)
+    if(!headers){
+        return parsed
+    }
+    headers.split("\r\n").forEach(line=>{
+        let [key,val]=line.split(":")
+        key=key.trim().toLowerCase()
+        if(!key){
+            return
+        }
+        if(val){
+            val=val.trim()
+        }
+        parsed[key] = val
+    })
+    return parsed;
+}

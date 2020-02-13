@@ -1,6 +1,7 @@
 import { AxiosRequestConfig,AxiosPromise,AxiosResponse } from './type/dataInterface'
 import { resolve } from 'dns';
 import { request } from 'http';
+import {parseHeaders} from "./helpers/headers"
 
 //通过配置数据调用原生的XMLHttpRequest对象的方法,进行数据请求
 function xhr(config:AxiosRequestConfig):AxiosPromise{
@@ -28,7 +29,7 @@ function xhr(config:AxiosRequestConfig):AxiosPromise{
             if(request.readyState!==4){
                 return
             }
-            const responseHeaders=request.getAllResponseHeaders()
+            const responseHeaders=parseHeaders(request.getAllResponseHeaders())
             const responseData = responseType && responseType !== 'text' ? request.response : request.responseText
             const response:AxiosResponse={
                 data:responseData,
