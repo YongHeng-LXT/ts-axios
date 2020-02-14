@@ -1,11 +1,11 @@
 {
-  "name": "ts-axios",
+  "name": "tx-axios-yh",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/tx-axios.umd.js",
-  "module": "dist/tx-axios.es5.js",
-  "typings": "dist/types/tx-axios.d.ts",
+  "main": "dist/tx-axios-yh.umd.js",
+  "module": "dist/tx-axios-yh.es5.js",
+  "typings": "dist/types/tx-axios-yh.d.ts",
   "files": [
     "dist"
   ],
@@ -33,7 +33,9 @@
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
     "travis-deploy-once": "travis-deploy-once",
-    "dev":"node src/example/server.js"
+    "dev":"node src/example/server.js",
+    "prepub": "npm run test:prod && npm run build", 
+    "pub": "sh release.sh"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
