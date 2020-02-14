@@ -60,12 +60,12 @@ export default class Axios{
         this.interceptors.response.forEach(interceptor=>{
             chain.push(interceptor)
         })
+        config=mergeConfig(this.defaults,config)
         let promise=Promise.resolve(config)
         while(chain.length){
             const{resolved,rejected}=chain.shift()!
             promise=promise.then(resolved,rejected)
         }
-        config=mergeConfig(this.defaults,config)
         return promise as AxiosPromise
         // return dispatchRequest(config)
     }

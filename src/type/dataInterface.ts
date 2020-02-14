@@ -10,6 +10,46 @@ interface AxiosRequestConfig{
     [propName: string]: any
     transformRequest?: AxiosTransformer | AxiosTransformer[] 
     transformResponse?: AxiosTransformer | AxiosTransformer[]
+    cancelToken?:CancelToken
+}
+
+//定义CancelToken实例类型的接口
+export interface CancelToken{
+    promise:Promise<Cancel>
+    reason?:Cancel
+    throwIfRequested(): void
+}
+
+//定义取消方法接口
+export interface Canceler{
+    (message?:string):void
+}
+
+//定义构造函数的接口
+export interface CancelExecutor{
+    (cancel:Canceler):void
+}
+
+//定义CancelToken的静态方法返回值接口
+export interface CancelTokenSource{
+    token:CancelToken
+    cancel:Canceler
+}
+
+//定义CancelToken类的类型
+export interface CancelTokenStatic{
+    new(executor:CancelExecutor):CancelToken
+    source():CancelTokenSource
+}
+
+//Cancel实例类型的接口定义
+export interface Cancel{
+    message?:string
+}
+
+//CancelStatic类型的接口定义
+export interface CancelStatic{
+    new(message?:string):Cancel
 }
 
 //定义transform的类型接口
@@ -42,6 +82,10 @@ export interface AxiosInstance extends Axios {
 //对Axios的静态接口定义
 export interface AxiosStatic extends AxiosInstance{ 
     create(config?: AxiosRequestConfig): AxiosInstance 
+
+    CancelToken:CancelTokenStatic
+    Cancel:CancelStatic
+    isCancel:(value:any)=>boolean
 }
 
 //对请求方式进行定义
