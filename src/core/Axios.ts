@@ -1,6 +1,7 @@
 import {AxiosRequestConfig,AxiosPromise,Method,AxiosResponse,RejectedFn,ResolvedFn} from "../type/dataInterface"
 import {dispatchRequest} from './dispatchRequest'
 import InterceptorManager from "./interceptorManager"
+import mergeConfig from "./mergeConfig"
 
 interface Interceptors{
     request:InterceptorManager<AxiosRequestConfig>
@@ -14,8 +15,10 @@ interface PromiseChain<T>{
 
 //定义Axios构造函数
 export default class Axios{
+    defaults:AxiosRequestConfig
     interceptors:Interceptors
-    constructor(){
+    constructor(initConfig:AxiosRequestConfig){
+        this.defaults=initConfig
         this.interceptors={
             request:new InterceptorManager<AxiosRequestConfig>(),
             response:new InterceptorManager<AxiosResponse>()
@@ -62,6 +65,7 @@ export default class Axios{
             const{resolved,rejected}=chain.shift()!
             promise=promise.then(resolved,rejected)
         }
+        config=mergeConfig(this.defaults,config)
         return promise as AxiosPromise
         // return dispatchRequest(config)
     }

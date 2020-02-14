@@ -1,4 +1,5 @@
-import {isPlainObject} from "./util"
+import { isPlainObject,deepMerge } from './util'
+import {Method} from "../type/dataInterface"
 
 //标准化请求头信息,将请求头的key与设定的保持一致
 function normalizeHeaderName(headers:any,normalizeName:string):void{
@@ -43,4 +44,17 @@ export function parseHeaders(headers:string):any{
         parsed[key] = val
     })
     return parsed;
+}
+
+//将头部信息解开一层
+export function flattenHeaders(headers:any,method:Method):any{
+    if(!headers){
+        return headers
+    }
+    headers=deepMerge(headers.common || {},headers[method] || {},headers)
+    const methodsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
+    methodsToDelete.forEach(method=>{
+        delete headers[method]
+    })
+    return headers
 }

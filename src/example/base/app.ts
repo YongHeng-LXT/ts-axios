@@ -60,8 +60,8 @@ let ljq = axios.interceptors.request.use(config=>{
 
 axios.interceptors.request.eject(ljq)
 
-
-axios.post('/base/post',{
+axios.post(
+    '/base/post',{
         x:5,
         y:6
     }

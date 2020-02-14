@@ -7,6 +7,14 @@ interface AxiosRequestConfig{
     headers?:any
     responseType?:XMLHttpRequestResponseType
     timeout?:number
+    [propName: string]: any
+    transformRequest?: AxiosTransformer | AxiosTransformer[] 
+    transformResponse?: AxiosTransformer | AxiosTransformer[]
+}
+
+//定义transform的类型接口
+export interface AxiosTransformer { 
+    (data: any, headers?: any): any 
 }
 
 //定义axios的多种请求方法接口
@@ -29,6 +37,11 @@ export interface Axios{
 export interface AxiosInstance extends Axios {
     (config: AxiosRequestConfig): AxiosPromise 
     (url:string,config?:AxiosRequestConfig):AxiosPromise
+}
+
+//对Axios的静态接口定义
+export interface AxiosStatic extends AxiosInstance{ 
+    create(config?: AxiosRequestConfig): AxiosInstance 
 }
 
 //对请求方式进行定义
